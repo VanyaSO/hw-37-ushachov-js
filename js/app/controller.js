@@ -10,6 +10,7 @@ function controller(view, model, payload) {
     view.init(form, todosContainer);
 
 
+
     const fetchFormData = inputs => {
         let data = inputs;
 
@@ -23,6 +24,7 @@ function controller(view, model, payload) {
         }, {})
     }
 
+
     const submitHandler = event => {
         event.preventDefault();
         event.stopPropagation();
@@ -35,8 +37,44 @@ function controller(view, model, payload) {
         view.renderTodoItem(data.saveData);
     }
 
-    form.addEventListener('submit', submitHandler)
+    const loadHandler = () => {
+        const todoItem = model.getData();
+        if(!todoItem) return;
 
-    return {
+        todoItem.forEach(item => view.renderTodoItem(item));
+
     }
+
+    const deleteHandler = event => {
+        event.preventDefault();
+
+        if(!event.target.classList.contains('delete')) return;
+        const todoId = +event.target.closest('[data-todo-id]').getAttribute('data-todo-id');
+
+        model.deleteTodoItem(todoId);
+        view.deleteTodoItem(todoId);
+
+    }
+
+    const statusHandler = event => {
+        event.stopPropagation();
+
+        if(!event.target.classList.contains('select-todo-item')) return;
+
+        // const index = event.target.getAttribute("data-select-status");
+        const index = event.target.value;
+        // console.log(index)
+    
+
+        model.setStatus(index);
+    }
+
+
+
+    form.addEventListener('submit', submitHandler);
+    window.addEventListener('DOMContentLoaded', loadHandler);
+    todosContainer.addEventListener('click', deleteHandler);
+    todosContainer.addEventListener('change', statusHandler);
+
+    return {}
 }
