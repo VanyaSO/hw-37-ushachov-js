@@ -38,7 +38,7 @@ function controller(view, model, payload) {
     }
 
     const loadHandler = () => {
-        const todoItem = model.getData();
+        const todoItem = model.data;
         if(!todoItem) return;
 
         todoItem.forEach(item => view.renderTodoItem(item));
@@ -59,14 +59,11 @@ function controller(view, model, payload) {
     const statusHandler = event => {
         event.stopPropagation();
 
-        if(!event.target.classList.contains('select-todo-item')) return;
+        const todoId = +event.target.id;
 
-        // const index = event.target.getAttribute("data-select-status");
-        const index = event.target.value;
-        // console.log(index)
-    
+        if(!event.target.classList.contains("select-todo-item")) return;
 
-        model.setStatus(index);
+        model.updatedStatus(todoId, event.target.value);
     }
 
 

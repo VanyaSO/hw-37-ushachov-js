@@ -6,17 +6,18 @@ function view() {
         const wrapperElement = document.createElement('div');
         wrapperElement.classList.add('col-4');
         wrapperElement.setAttribute('data-todo-id', data.id);
-        wrapperElement.setAttribute('data-select-status', data.status);
 
         wrapperElement.innerHTML = `<div class="taskWrapper">
                 <div class="taskHeading">${data.title}</div>
                 <div class="taskDescription">${data.description}</div>
                 <button class="btn btn-danger mt-3 delete">Delete</button>
-                <select class="select-todo-item" name="select" >
-                    <option value="no-status">Без статуса</option>
-                    <option value="pending">В работе</option>
-                    <option value="сompleted">Завершен</option>
+                
+                <select class="select-todo-item" name="select" id=${data.id}>
+                    <option value="noStatus" ${(data.status === `noStatus` ? `selected` : ``)}>no status</option> 
+                    <option value="pending" ${(data.status === `pending` ? `selected` : ``)}>pending</option>  
+                    <option value="complete" ${(data.status === `complete` ? `selected` : ``)}>complete</option> 
                 </select>
+                
             </div>`;
 
         return wrapperElement

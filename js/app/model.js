@@ -14,13 +14,13 @@ function model() {
         },
 
 
-        getData(){
+        get data(){
             return JSON.parse(localStorage.getItem(this.dbName));
         },
 
         setData(data){
             let response = null;
-            const savedData = this.getData();
+            const savedData = this.data;
             const dataToSave = savedData ? savedData : [];
 
             data.id = this.currentId;
@@ -42,7 +42,7 @@ function model() {
         },
 
         deleteTodoItem(id){
-            const data = this.getData();
+            const data = this.data;
 
             const upData = data.filter(item => item.id !== id);
 
@@ -53,16 +53,20 @@ function model() {
             }
         },
 
-        setStatus(index){
-            const data = this.getData();
-            this.statusItem = index;
+        updatedStatus(id, status){
+            const data = this.data;
+
+            for(let item of data){
+                if(item.id !== id) return;
+                item.status = status;
+            }
             localStorage.setItem(this.dbName, JSON.stringify(data));
         },
 
         init(dbkey){
             this.setDBName(dbkey);
 
-            const savedData = this.getData();
+            const savedData = this.data;
             this.currentId = savedData ? savedData[savedData.length-1].id + 1 : 1;
         }
 
